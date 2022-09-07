@@ -10,7 +10,7 @@ public class Feature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
-    private String name;
+    private String title;
     private String description;
 
     @OneToMany(mappedBy = "feature")
@@ -30,11 +30,11 @@ public class Feature {
     }
 
     public String getName() {
-        return name;
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
