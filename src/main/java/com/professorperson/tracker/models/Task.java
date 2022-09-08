@@ -1,5 +1,7 @@
 package com.professorperson.tracker.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "feature_id", nullable = false)
+    @JsonBackReference
     private Feature feature;
 
     public int getId() {
@@ -22,11 +25,11 @@ public class Task {
         this.id = id;
     }
 
-    public String getName() {
+    public String getTitle() {
         return title;
     }
 
-    public void setName(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 

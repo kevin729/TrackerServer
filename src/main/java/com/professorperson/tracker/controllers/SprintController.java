@@ -1,25 +1,45 @@
 package com.professorperson.tracker.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.professorperson.tracker.models.Feature;
+import com.professorperson.tracker.models.Task;
+import com.professorperson.tracker.models.repos.FeatureDAO;
+import com.professorperson.tracker.models.repos.SprintDAO;
+import com.professorperson.tracker.models.repos.TaskDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@RestController()
+@RestController
 @RequestMapping("v1")
 public class SprintController {
 
-    @GetMapping("/tasks")
-    public List<String> getTasks() {
-        return Arrays.asList(new String[] {"test 1", "test 2"});
+    @Autowired
+    SprintDAO sprints;
+
+    @Autowired
+    FeatureDAO features;
+
+    @Autowired
+    TaskDAO tasks;
+
+    @GetMapping("/features")
+    public List<Feature> getFeatures() {
+        return features.findAll();
+    }
+
+    @PostMapping("/features")
+    public List<Feature> postFeature(@RequestBody Feature feature) {
+        features.save(feature);
+        return features.findAll();
     }
 
     @PostMapping("/tasks")
-    public List<String> postTask() {
-        return Arrays.asList(new String[] {"test 1", "test 2"});
+    public List<Feature> postTask(@RequestBody Task task) {
+        tasks.save(task);
+        return features.findAll();
     }
 }
