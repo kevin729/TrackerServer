@@ -41,9 +41,9 @@ public class WebSocket implements I_WebSocket {
 
             WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
 
-            //String url = "ws://tasktrackerserver.herokuapp.com/time";
-            String url = "ws://localhost:8080/time";
-            return stompClient.connect(url, new WebSocketHttpHeaders(), new Handler(message), "localhost", 8080).get();
+            String url = "ws://tasktrackerserver.herokuapp.com/time";
+            //String url = "ws://localhost:8080/time";
+            return stompClient.connect(url, new WebSocketHttpHeaders(), new Handler(message), "tasktrackerserver.herokuapp.com", 443).get();
 
         } catch (ExecutionException e) {
 
