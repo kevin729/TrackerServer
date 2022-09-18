@@ -45,6 +45,11 @@ public class SprintController {
         return features.findAll();
     }
 
+    @PutMapping("/tasks")
+    public void putTask(@RequestBody Task task) {
+        tasks.save(task);
+    }
+
     @PostMapping("/track")
     public void track() {
         Timer timer = new Timer(socket);
