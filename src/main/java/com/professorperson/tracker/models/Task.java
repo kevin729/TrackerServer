@@ -11,6 +11,7 @@ public class Task {
     private int id;
     private String title;
     private String description;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "feature_id", nullable = false)
@@ -39,6 +40,14 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Feature getFeature() {
