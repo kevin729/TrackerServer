@@ -1,5 +1,7 @@
 package com.professorperson.tracker.web;
 
+import com.google.gson.Gson;
+import com.professorperson.tracker.models.Message;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
@@ -17,7 +19,13 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class WebSocket implements I_WebSocket {
+
+    private String url;
     private StompSession session;
+
+    public WebSocket(String url) {
+        this.url = url;
+    }
 
     private class Handler extends StompSessionHandlerAdapter {
 
@@ -42,7 +50,6 @@ public class WebSocket implements I_WebSocket {
             WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
 
             //String url = "ws://tasktrackerserver.herokuapp.com/time";
-            String url = "ws://localhost:8080/time";
             return stompClient.connect(url, new WebSocketHttpHeaders(), new Handler(message), "localhost", 8080).get();
 
         } catch (ExecutionException e) {
@@ -65,6 +72,19 @@ public class WebSocket implements I_WebSocket {
         }
 
         session.send(path, message.getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public void send(Message message, String path) {
+        if (session == null) {
+            session = setupSession(message.getText());
+        }
+
+        if (session == null || !session.isConnected()) {
+            return;
+        }
+
+        session.send(path, new Gson().toJson(message).getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
