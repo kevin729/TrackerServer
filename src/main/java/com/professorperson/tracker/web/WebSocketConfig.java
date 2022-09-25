@@ -25,8 +25,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/topic"); //transfer messages back to clients prefixed with /topic
     }
 
-    @Bean
-    public I_WebSocket getSocket() {
-        return new WebSocket();
+    @Bean("timeSocket")
+    public I_WebSocket getTimeSocket() {
+        return new WebSocket("ws://localhost:8080/time");
+    }
+
+    @Bean("lukeMindSocket")
+    public I_WebSocket getLukeMindSocket() {
+        return new WebSocket("ws://lukemind.herokuapp.com/frame");
     }
 }

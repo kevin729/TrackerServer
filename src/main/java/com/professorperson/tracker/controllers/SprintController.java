@@ -1,6 +1,7 @@
 package com.professorperson.tracker.controllers;
 
 import com.professorperson.tracker.models.Feature;
+import com.professorperson.tracker.models.Message;
 import com.professorperson.tracker.models.Task;
 import com.professorperson.tracker.models.repos.FeatureDAO;
 import com.professorperson.tracker.models.repos.SprintDAO;
@@ -8,6 +9,7 @@ import com.professorperson.tracker.models.repos.TaskDAO;
 import com.professorperson.tracker.time.Timer;
 import com.professorperson.tracker.web.I_WebSocket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,10 +28,19 @@ public class SprintController {
     TaskDAO tasks;
 
     @Autowired
-    I_WebSocket socket;
+    @Qualifier("timeSocket")
+    I_WebSocket timeSocket;
+
+    @Autowired
+    @Qualifier("lukeMindSocket")
+    I_WebSocket lukeMindSocket;
 
     @GetMapping("/features")
     public List<Feature> getFeatures() {
+        Message message = new Message();
+        message.setText("Getting features");
+
+        lukeMindSocket.send(message, "/app/send_message");
         return features.findAll();
     }
 
@@ -52,7 +63,7 @@ public class SprintController {
 
     @PostMapping("/track")
     public void track() {
-        Timer timer = new Timer(socket);
+        Timer timer = new Timer(timeSocket);
         timer.start();
     }
 
