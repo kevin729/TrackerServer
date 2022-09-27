@@ -49,8 +49,17 @@ public class WebSocket implements I_WebSocket {
 
             WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
 
-            //String url = "ws://tasktrackerserver.herokuapp.com/time";
-            return stompClient.connect(url, new WebSocketHttpHeaders(), new Handler(message), "localhost", 8080).get();
+            int port = -1;
+            String uriParams = "";
+            if (url.contains("localhost")) {
+                port = 8080;
+                uriParams = "localhost";
+            } else {
+                port = 443;
+                uriParams = "herokuapp";
+            }
+
+            return stompClient.connect(url, new WebSocketHttpHeaders(), new Handler(message), uriParams, port).get();
 
         } catch (ExecutionException e) {
 
