@@ -27,7 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Bean("timeSocket")
     public I_WebSocket getTimeSocket() {
-        return new WebSocket("ws://localhost:8080/time");
+        return new WebSocket("ws://tasktrackerserver.herokuapp.com/time");
     }
 
     @Bean("lukeMindSocket")
