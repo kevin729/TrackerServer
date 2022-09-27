@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 @RestController
@@ -39,8 +41,19 @@ public class SprintController {
     public List<Feature> getFeatures() {
         Message message = new Message();
         message.setText("Getting features");
-
         lukeMindSocket.send(message, "/app/send_message");
+
+        try {
+            lukeMindSocket.send("TRY", "/app/send_message");
+            List<Feature> featureList = features.findAll();
+        } catch (Exception e) {
+            lukeMindSocket.send("CATCH", "/app/send_message");
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+
+            e.printStackTrace(pw);
+            lukeMindSocket.send(sw.toString(), "/app/send_message");
+        }
         return features.findAll();
     }
 
