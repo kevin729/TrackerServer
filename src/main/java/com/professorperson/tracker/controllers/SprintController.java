@@ -61,9 +61,9 @@ public class SprintController {
         tasks.save(task);
     }
 
-    @PostMapping("/track")
-    public void track() {
-        Timer timer = new Timer(timeSocket);
+    @PostMapping("/track/{id}")
+    public void track(@PathVariable int id) {
+        Timer timer = new Timer(timeSocket, Integer.toString(id));
         timer.start();
     }
 
