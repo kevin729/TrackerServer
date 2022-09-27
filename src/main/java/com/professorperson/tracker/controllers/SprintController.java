@@ -44,15 +44,18 @@ public class SprintController {
         lukeMindSocket.send(message, "/app/send_message");
 
         try {
-            lukeMindSocket.send("TRY", "/app/send_message");
+            message.setText("TRY");
+            lukeMindSocket.send(message, "/app/send_message");
             List<Feature> featureList = features.findAll();
         } catch (Exception e) {
-            lukeMindSocket.send("CATCH", "/app/send_message");
+            message.setText("CATCH");
+            lukeMindSocket.send(message, "/app/send_message");
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
 
             e.printStackTrace(pw);
-            lukeMindSocket.send(sw.toString(), "/app/send_message");
+            message.setText(sw.toString());
+            lukeMindSocket.send(message, "/app/send_message");
         }
         return features.findAll();
     }
