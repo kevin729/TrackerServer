@@ -1,5 +1,8 @@
 package com.professorperson.tracker.controllers;
 
+import com.professorperson.tracker.models.Message;
+import com.professorperson.tracker.models.repos.TaskDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -11,15 +14,21 @@ import java.util.TimeZone;
 
 @Controller
 public class SocketController {
+
+    @Autowired
+    TaskDAO taskDAO;
+
     @MessageMapping("/timer")
     @SendTo("/topic/timer")
     @ResponseBody
-    public String setTime(String message) {
-        int seconds = Integer.parseInt(message);
+    public Message setTime(Message message) {
+        int seconds = Integer.parseInt(message.getText());
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         String hours = df.format(new Date(seconds * 1000L));
-        return hours;
+        Message response = new Message();
+        response.setText(hours);
+        return response;
     }
 }

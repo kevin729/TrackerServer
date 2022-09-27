@@ -1,5 +1,6 @@
 package com.professorperson.tracker.time;
 
+import com.professorperson.tracker.models.Message;
 import com.professorperson.tracker.web.I_WebSocket;
 
 public class Timer implements Runnable {
@@ -8,11 +9,13 @@ public class Timer implements Runnable {
     private boolean running = false;
 
     private int seconds = 0;
+    private String to;
 
     private I_WebSocket socket;
 
-    public Timer(I_WebSocket socket) {
+    public Timer(I_WebSocket socket, String to) {
         this.socket = socket;
+        this.to = to;
     }
 
     public synchronized void start() {
@@ -40,7 +43,12 @@ public class Timer implements Runnable {
             if (delta >= 1) {
                 delta = 0;
                 seconds++;
-                socket.send(Integer.toString(seconds), "/app/timer");
+
+                Message message = new Message();
+                message.setText(Integer.toString(seconds));
+                message.setTo(to);
+
+                socket.send(message, "/app/timer");
             }
 
             lastTime = now;
