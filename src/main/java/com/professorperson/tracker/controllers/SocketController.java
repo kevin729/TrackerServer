@@ -29,6 +29,7 @@ public class SocketController {
         String hours = df.format(new Date(seconds * 1000L));
 
         Task task = taskDAO.findById(Integer.parseInt(message.getTo())).get();
+        task.setSeconds(seconds);
         task.setTime(hours);
         taskDAO.save(task);
 
