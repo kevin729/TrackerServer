@@ -63,12 +63,15 @@ public class SprintController {
 
     @PostMapping("/track/{id}")
     public void track(@PathVariable int id) {
-        Timer timer = new Timer(timeSocket, Integer.toString(id));
+        Task task = tasks.findById(id).get();
+        task.setupTimer(timeSocket);
+        Timer timer = task.getTimer();
         timer.start();
     }
 
-    @PostMapping("/unTrack")
-    public void unTrack() {
-
+    @PostMapping("/unTrack/{id}")
+    public void unTrack(@PathVariable int id) {
+        Task task = tasks.findById(id).get();
+        task.getTimer().stop();
     }
 }
