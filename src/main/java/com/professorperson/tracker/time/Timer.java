@@ -54,4 +54,8 @@ public class Timer implements Runnable {
             lastTime = now;
         }
     }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
 }

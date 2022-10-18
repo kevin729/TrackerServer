@@ -1,6 +1,8 @@
 package com.professorperson.tracker.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.professorperson.tracker.time.Timer;
+import com.professorperson.tracker.web.I_WebSocket;
 
 import javax.persistence.*;
 
@@ -13,11 +15,24 @@ public class Task {
     private String description;
     private String status;
     private String time;
+    private int seconds;
 
     @ManyToOne
     @JoinColumn(name = "feature_id", nullable = false)
     @JsonBackReference
     private Feature feature;
+
+    @Transient
+    private Timer timer;
+
+    public Timer setupTimer(I_WebSocket socket) {
+        if (timer == null) {
+            timer = new Timer(socket, Integer.toString(id));
+            timer.setSeconds(seconds);
+        }
+
+        return timer;
+    }
 
     public int getId() {
         return id;
@@ -57,5 +72,25 @@ public class Task {
 
     public void setFeature(Feature feature) {
         this.feature = feature;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }

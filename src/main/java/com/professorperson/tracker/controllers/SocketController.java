@@ -1,6 +1,7 @@
 package com.professorperson.tracker.controllers;
 
 import com.professorperson.tracker.models.Message;
+import com.professorperson.tracker.models.Task;
 import com.professorperson.tracker.models.repos.TaskDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,8 +26,12 @@ public class SocketController {
         int seconds = Integer.parseInt(message.getText());
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
-
         String hours = df.format(new Date(seconds * 1000L));
+
+        Task task = taskDAO.findById(Integer.parseInt(message.getTo())).get();
+        task.setTime(hours);
+        taskDAO.save(task);
+
         Message response = new Message();
         response.setText(hours);
         return response;
