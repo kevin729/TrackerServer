@@ -45,15 +45,12 @@ public class SprintController {
     @GetMapping("/features")
     public List<Feature> getFeatures() {
 
-        Message message = new Message();
-        message.setText("Getting features");
-        lukeMindSocket.send(message, "/app/send_message");
+
 
         try {
             features.findAll();
         } catch (Exception e) {
-            message.setText("CATCH");
-            lukeMindSocket.send(message, "/app/send_message");
+            Message message = new Message();
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
 
