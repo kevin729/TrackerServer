@@ -17,7 +17,7 @@ public class Task {
     private String time;
 
     @Column(columnDefinition = "integer")
-    private int seconds;
+    private long seconds;
 
     @ManyToOne
     @JoinColumn(name = "feature_id", nullable = false)
@@ -64,11 +64,11 @@ public class Task {
         this.feature = feature;
     }
 
-    public int getSeconds() {
+    public long getSeconds() {
         return seconds;
     }
 
-    public void setSeconds(int seconds) {
+    public void setSeconds(long seconds) {
         this.seconds = seconds;
     }
 

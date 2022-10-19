@@ -7,7 +7,7 @@ public class Timer implements Runnable {
     private Thread thread;
     private boolean running = false;
 
-    private int seconds = 0;
+    private long seconds = 0;
     private String to;
 
     private I_WebSocket socket;
@@ -45,7 +45,7 @@ public class Timer implements Runnable {
                 seconds++;
 
                 Message message = new Message();
-                message.setText(Integer.toString(seconds));
+                message.setText(Long.toString(seconds));
                 message.setTo(to);
                 if (running) {
                     socket.send(message, "/app/timer");
@@ -56,7 +56,7 @@ public class Timer implements Runnable {
         }
     }
 
-    public void setSeconds(int seconds) {
+    public void setSeconds(long seconds) {
         this.seconds = seconds;
     }
 
