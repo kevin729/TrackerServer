@@ -15,6 +15,8 @@ public class Task {
     private String description;
     private String status;
     private String time;
+
+    @Column(columnDefinition = "int8")
     private int seconds;
 
     @ManyToOne
