@@ -27,7 +27,6 @@ public class SocketController {
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         String hours = df.format(new Date(seconds * 1000L));
-
         Task task = taskDAO.findById(Integer.parseInt(message.getTo())).get();
         task.setSeconds(seconds);
         task.setTime(hours);
@@ -35,6 +34,7 @@ public class SocketController {
 
         Message response = new Message();
         response.setText(hours);
+        response.setTo(message.getTo());
         return response;
     }
 }
