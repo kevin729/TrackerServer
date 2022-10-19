@@ -44,25 +44,6 @@ public class SprintController {
 
     @GetMapping("/features")
     public List<Feature> getFeatures() {
-
-        Message message = new Message();
-        message.setText("Getting features");
-        lukeMindSocket.send(message, "/app/send_message");
-
-        try {
-            message.setText("TRY");
-            lukeMindSocket.send(message, "/app/send_message");
-            List<Feature> featureList = features.findAll();
-        } catch (Exception e) {
-            message.setText("CATCH");
-            lukeMindSocket.send(message, "/app/send_message");
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-
-            e.printStackTrace(pw);
-            message.setText(sw.toString());
-            lukeMindSocket.send(message, "/app/send_message");
-        }
         return features.findAll();
     }
 
