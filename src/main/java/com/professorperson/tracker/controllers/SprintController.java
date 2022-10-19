@@ -1,5 +1,6 @@
 package com.professorperson.tracker.controllers;
 
+import com.google.gson.Gson;
 import com.professorperson.tracker.models.Feature;
 import com.professorperson.tracker.models.Message;
 import com.professorperson.tracker.models.Task;
@@ -14,11 +15,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("v1")
 public class SprintController {
+
+    List<Timer> timers = new ArrayList<>();
 
     @Autowired
     SprintDAO sprints;
@@ -39,6 +44,7 @@ public class SprintController {
 
     @GetMapping("/features")
     public List<Feature> getFeatures() {
+
         Message message = new Message();
         message.setText("Getting features");
         lukeMindSocket.send(message, "/app/send_message");
@@ -79,15 +85,27 @@ public class SprintController {
 
     @PostMapping("/track/{id}")
     public void track(@PathVariable int id) {
+        Timer timer = null;
         Task task = tasks.findById(id).get();
-        task.setupTimer(timeSocket);
-        Timer timer = task.getTimer();
+        List<Timer> timerList = timers.stream().filter(t -> t.getTo().equals(Integer.toString(id))).collect(Collectors.toList());
+
+
+        if (timerList.isEmpty()) {
+            timer = new Timer(timeSocket, Integer.toString(id));
+            timer.setTo(Integer.toString(id));
+            timer.setSeconds(task.getSeconds());
+            timers.add(timer);
+        } else {
+            timer = timerList.get(0);
+        }
         timer.start();
     }
 
     @PostMapping("/unTrack/{id}")
     public void unTrack(@PathVariable int id) {
-        Task task = tasks.findById(id).get();
-        task.getTimer().stop();
+        Timer timer = timers.stream().filter(t -> t.getTo().equals(Integer.toString(id))).collect(Collectors.toList()).get(0);
+        System.out.println(timer);
+        System.out.println(timer.isRunning());
+        timer.stop();
     }
 }

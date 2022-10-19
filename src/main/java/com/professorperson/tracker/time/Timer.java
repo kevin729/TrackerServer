@@ -4,8 +4,7 @@ import com.professorperson.tracker.models.Message;
 import com.professorperson.tracker.web.I_WebSocket;
 
 public class Timer implements Runnable {
-
-    private Thread thread = new Thread(this);
+    private Thread thread;
     private boolean running = false;
 
     private int seconds = 0;
@@ -20,6 +19,7 @@ public class Timer implements Runnable {
 
     public synchronized void start() {
         running = true;
+        thread = new Thread(this);
         thread.start();
     }
 
@@ -47,8 +47,9 @@ public class Timer implements Runnable {
                 Message message = new Message();
                 message.setText(Integer.toString(seconds));
                 message.setTo(to);
-
-                socket.send(message, "/app/timer");
+                if (running) {
+                    socket.send(message, "/app/timer");
+                }
             }
 
             lastTime = now;
@@ -57,5 +58,17 @@ public class Timer implements Runnable {
 
     public void setSeconds(int seconds) {
         this.seconds = seconds;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }

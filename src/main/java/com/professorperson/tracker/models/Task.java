@@ -22,18 +22,6 @@ public class Task {
     @JsonBackReference
     private Feature feature;
 
-    @Transient
-    private Timer timer;
-
-    public Timer setupTimer(I_WebSocket socket) {
-        if (timer == null) {
-            timer = new Timer(socket, Integer.toString(id));
-            timer.setSeconds(seconds);
-        }
-
-        return timer;
-    }
-
     public int getId() {
         return id;
     }
@@ -90,7 +78,4 @@ public class Task {
         this.time = time;
     }
 
-    public Timer getTimer() {
-        return timer;
-    }
 }
