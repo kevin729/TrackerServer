@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,7 +41,18 @@ public class SprintController {
 
     @GetMapping("/features")
     public List<Feature> getFeatures() {
-        return features.findAll();
+        List<Feature> featureList = features.findAll();
+
+        if (featureList.isEmpty()) {
+            return null;
+        }
+
+        featureList.stream().forEach(feature -> {
+            feature.setTasks(feature.getTasks().stream().sorted(Comparator.comparingInt(Task::getId)).collect(Collectors.toCollection(LinkedHashSet::new)));
+        });
+
+
+        return featureList;
     }
 
     @PostMapping("/features")
