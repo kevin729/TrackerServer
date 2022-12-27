@@ -61,6 +61,12 @@ public class SprintController {
         return features.findAll();
     }
 
+    @DeleteMapping("/features")
+    public List<Feature> deleteFeature(@RequestBody Feature feature) {
+        features.delete(feature);
+        return features.findAll();
+    }
+
     @PostMapping("/tasks")
     public List<Feature> postTask(@RequestBody Task task) {
         tasks.save(task);
@@ -93,8 +99,13 @@ public class SprintController {
     @PostMapping("/unTrack/{id}")
     public void unTrack(@PathVariable int id) {
         Timer timer = timers.stream().filter(t -> t.getTo().equals(Integer.toString(id))).collect(Collectors.toList()).get(0);
-        System.out.println(timer);
-        System.out.println(timer.isRunning());
         timer.stop();
+    }
+
+    @DeleteMapping("/tasks/{id}")
+    public List<Feature> deleteTask(@PathVariable int id) {
+        Task task = tasks.findById(id).get();
+        tasks.delete(task);
+        return features.findAll();
     }
 }
