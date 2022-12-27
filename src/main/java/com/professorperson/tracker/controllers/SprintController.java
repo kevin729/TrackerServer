@@ -66,6 +66,10 @@ public class SprintController {
     @DeleteMapping("/features/{id}")
     public List<Feature> deleteFeature(@PathVariable int id) {
         Feature feature = features.findById(id).get();
+        for (Task task : feature.getTasks()) {
+            tasks.delete(task);
+        }
+
         features.delete(feature);
         return features.findAll();
     }
