@@ -61,8 +61,9 @@ public class SprintController {
         return features.findAll();
     }
 
-    @DeleteMapping("/features")
-    public List<Feature> deleteFeature(@RequestBody Feature feature) {
+    @DeleteMapping("/features/{id}")
+    public List<Feature> deleteFeature(@PathVariable int id) {
+        Feature feature = features.findById(id).get();
         features.delete(feature);
         return features.findAll();
     }
