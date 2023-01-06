@@ -89,8 +89,10 @@ public class SprintController {
     public void track(@PathVariable int id) {
         Timer timer = null;
         Task task = tasks.findById(id).get();
-        List<Timer> timerList = timers.stream().filter(t -> t.getTo().equals(Integer.toString(id))).collect(Collectors.toList());
+        task.setTracking(true);
+        tasks.save(task);
 
+        List<Timer> timerList = timers.stream().filter(t -> t.getTo().equals(Integer.toString(id))).collect(Collectors.toList());
 
         if (timerList.isEmpty()) {
             timer = new Timer(timeSocket, Integer.toString(id));
@@ -105,6 +107,9 @@ public class SprintController {
 
     @PostMapping("/unTrack/{id}")
     public void unTrack(@PathVariable int id) {
+        Task task = tasks.findById(id).get();
+        task.setTracking(false);
+        tasks.save(task);
         Timer timer = timers.stream().filter(t -> t.getTo().equals(Integer.toString(id))).collect(Collectors.toList()).get(0);
         timer.stop();
     }

@@ -16,6 +16,7 @@ public class Task {
     private String status;
     private String time;
     private int seconds;
+    private boolean tracking = false;
 
     @ManyToOne
     @JoinColumn(name = "feature_id", nullable = false)
@@ -78,4 +79,11 @@ public class Task {
         this.time = time;
     }
 
+    public boolean isTracking() {
+        return tracking;
+    }
+
+    public void setTracking(boolean tracking) {
+        this.tracking = tracking;
+    }
 }
